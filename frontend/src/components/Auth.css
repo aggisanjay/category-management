@@ -1,0 +1,85 @@
+/* Auth.css */
+.form-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #4f46e5, #3b82f6);
+    padding: 20px;
+  }
+  
+  .form {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .form h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 28px;
+    color: #1e3a8a;
+  }
+  
+  .form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .form input:focus {
+    border-color: #3b82f6;
+    outline: none;
+  }
+  
+  .form button {
+    width: 100%;
+    padding: 12px;
+    background: #3b82f6;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .form button:hover {
+    background: #2563eb;
+  }
+  
+  .form .signup-text {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .form .signup-text a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  
+  .form .signup-text a:hover {
+    text-decoration: underline;
+  }
+  
+  .success {
+    color: green;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000', // Adjust based on your backend
+  baseURL: 'https://category-management-seven.vercel.app/', // Adjust based on your backend
 });
 
 instance.interceptors.request.use((config) => {

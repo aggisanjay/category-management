@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../api/axiosConfig'; // Ensure you have axios config
+import axios from 'axios'; // Ensure you have axios config
 import './CategoryCard.css'; // Add custom CSS for styling
 
 const CategoryCard = ({ category, onUpdated }) => {
@@ -16,7 +16,7 @@ const CategoryCard = ({ category, onUpdated }) => {
     if (newImage) formData.append('image', newImage);
 
     try {
-      await axios.put(`/api/categories/${category._id}`, formData, {
+      await axios.put(`https://category-management-fvw8.onrender.com/api/categories/${category._id}`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

@@ -37,14 +37,15 @@ const Dashboard = () => {
     try {
       await axios.post('/api/categories', formData, {
         headers: {
-          Authorization: Bearer ${localStorage.getItem('token')},
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
+
       });
       fetchCategories(); // Reload categories after adding a new one
       setName('');
       setItemCount('');
       setImage(null);
-    } catch (err) {
+    } catch(err) {
       console.error(err);
     }
   };
@@ -147,4 +148,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard

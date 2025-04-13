@@ -35,7 +35,7 @@ const CategoryCard = ({ category, onUpdated }) => {
     <div className="category-card">
       <div className="category-image">
         <img
-          src={category.imageUrl ? `https://category-management-seven.vercel.app/${category.imageUrl}` : '/images/default-image.jpg'}
+          src={category.imageUrl ? `https://category-management-fvw8.onrender.com/${category.imageUrl}` : '/images/default-image.jpg'}
           alt={category.name}
         />
       </div>

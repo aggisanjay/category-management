@@ -7,7 +7,13 @@ const categoryRoutes = require('./routes/categoryRoutes');
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors(
+  {
+    origin: 'https://category-management-fvw8.onrender.com',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }
+));
 app.use(express.json());
 app.use('/uploads', express.static('uploads')); // static folder for images
 

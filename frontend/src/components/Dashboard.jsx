@@ -7,20 +7,17 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [categories, setCategories] = useState([]);
-  const [filteredCategories, setFilteredCategories] = useState([]);
   const [name, setName] = useState('');
   const [itemCount, setItemCount] = useState('');
   const [image, setImage] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Protect route — if not logged in, redirect to login
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/signup'); // Redirect to signup if not logged in
+      navigate('/signup');
     }
   }, [navigate]);
 
@@ -32,7 +29,6 @@ const Dashboard = () => {
         }
       });
       setCategories(res.data);
-      setFilteredCategories(res.data);
     } catch (err) {
       console.error(err);
       if (err.response?.status === 401) {
@@ -69,15 +65,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    setSearchTerm(value);
-    const filtered = categories.filter(cat =>
-      cat.name.toLowerCase().includes(value)
-    );
-    setFilteredCategories(filtered);
-  };
-
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -101,15 +88,6 @@ const Dashboard = () => {
 
       <div className="main">
         <div className="topbar">
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder="Search Category"
-              value={searchTerm}
-              onChange={handleSearch}
-            />
-            <i className="fas fa-search search-icon"></i>
-          </div>
           <div className="user-info">
             <span>{user?.email}</span>
             <i className="fas fa-user-circle"></i>
@@ -164,7 +142,7 @@ const Dashboard = () => {
         </div>
 
         <div className="category-grid">
-          {filteredCategories.map((cat) => (
+          {categories.map((cat) => (
             <CategoryCard
               key={cat._id}
               category={cat}

@@ -1,26 +1,44 @@
-
 import { useState, useEffect } from 'react';
 import axios from '../api/axiosConfig';
-import './Dashboard.css'; // Custom CSS for styling
+import './Dashboard.css';
 import CategoryCard from '../components/CategoryCard';
 import { useAuth } from '../components/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [categories, setCategories] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const [name, setName] = useState('');
   const [itemCount, setItemCount] = useState('');
   const [image, setImage] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const { user,logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Protect route — if not logged in, redirect to login
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/signup'); // Redirect to signup if not logged in
+    }
+  }, [navigate]);
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('/api/categories');
+      const res = await axios.get('/api/categories', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       setCategories(res.data);
+      setFilteredCategories(res.data);
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) {
+        logout();
+        navigate('/login');
+      }
     }
   };
 
@@ -41,19 +59,28 @@ const Dashboard = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      fetchCategories(); // Reload categories after adding a new one
+      fetchCategories();
       setName('');
       setItemCount('');
       setImage(null);
+      document.getElementById('add-category-modal').style.display = 'none';
     } catch (err) {
       console.error(err);
     }
   };
 
-  
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchTerm(value);
+    const filtered = categories.filter(cat =>
+      cat.name.toLowerCase().includes(value)
+    );
+    setFilteredCategories(filtered);
+  };
+
   const handleLogout = () => {
-    logout(); // clear context
-    navigate('/login'); // redirect to login page
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -64,12 +91,9 @@ const Dashboard = () => {
         </div>
         <nav className="sidebar-nav">
           <a href="#"><i className="fas fa-th-large"></i><span>Dashboard</span></a>
-          <a href="#"><i className="fas fa-box"></i><span>Orders</span></a>
-          <a href="#"><i className="fas fa-tags"></i><span>Products</span></a>
-          <a href="#"><i className="fas fa-users"></i><span>Customers</span></a>
         </nav>
         <div className="sidebar-footer">
-        <button onClick={handleLogout} className="logout-btn">
+          <button onClick={handleLogout} className="logout-btn">
             <i className="fas fa-power-off"></i><span>Logout</span>
           </button>
         </div>
@@ -78,9 +102,12 @@ const Dashboard = () => {
       <div className="main">
         <div className="topbar">
           <div className="search-container">
-            <input type="text"
-  placeholder="Search"
-  />
+            <input
+              type="text"
+              placeholder="Search Category"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
             <i className="fas fa-search search-icon"></i>
           </div>
           <div className="user-info">
@@ -91,14 +118,14 @@ const Dashboard = () => {
 
         <div className="categories-header">
           <h1>Categories</h1>
-          <button
-            onClick={() => document.getElementById('add-category-modal').style.display = 'block'}
-          >
+          <button onClick={() =>
+            document.getElementById('add-category-modal').style.display = 'block'
+          }>
             + Add Category
           </button>
         </div>
 
-        {/* Modal for Adding Category */}
+        {/* Add Category Modal */}
         <div id="add-category-modal" className="modal">
           <div className="modal-content">
             <h3>Add New Category</h3>
@@ -121,11 +148,13 @@ const Dashboard = () => {
                 type="file"
                 onChange={(e) => setImage(e.target.files[0])}
               />
-              <div>
-                <button type="submit">Add Category</button>
+              <div className="modal-buttons">
+                <button type="submit">Add</button>
                 <button
                   type="button"
-                  onClick={() => document.getElementById('add-category-modal').style.display = 'none'}
+                  onClick={() =>
+                    document.getElementById('add-category-modal').style.display = 'none'
+                  }
                 >
                   Cancel
                 </button>
@@ -135,11 +164,11 @@ const Dashboard = () => {
         </div>
 
         <div className="category-grid">
-          {categories.map((cat) => (
+          {filteredCategories.map((cat) => (
             <CategoryCard
               key={cat._id}
               category={cat}
-              onUpdated={fetchCategories} // Fetch updated categories after editing
+              onUpdated={fetchCategories}
             />
           ))}
         </div>

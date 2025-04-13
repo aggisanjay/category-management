@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://localhost:5000', // Adjust based on your backend
+  baseURL: 'https://category-management-fvw8.onrender.com', // Adjust based on your backend
 });
 
 instance.interceptors.request.use((config) => {

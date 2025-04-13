@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from '../api/axiosConfig';
+import axios from 'axios';
 import './Dashboard.css'; // Custom CSS for styling
 import CategoryCard from '../components/CategoryCard';
 import { useAuth } from '../components/context/AuthContext';
@@ -16,7 +16,11 @@ const Dashboard = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('/api/categories');
+      const res = await axios.get('https://category-management-fvw8.onrender.com/api/categories',{
+         headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
       setCategories(res.data);
     } catch (err) {
       console.error(err);
@@ -35,7 +39,7 @@ const Dashboard = () => {
     if (image) formData.append('image', image);
 
     try {
-      await axios.post('/api/categories', formData, {
+      await axios.post('https://category-management-fvw8.onrender.com/api/categories', formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

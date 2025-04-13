@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 app.use(cors(
   {
-    origin: 'https://category-management-fvw8.onrender.com',
+    origin: 'https://category-management-1-95g0.onrender.com',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
   }

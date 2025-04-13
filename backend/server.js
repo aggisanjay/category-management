@@ -18,6 +18,6 @@ app.use('/api/categories', categoryRoutes);
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('Connected to MongoDB'))
   .then(() => {
-    app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+    app.listen(PORT, () => console.log('Server running on http://localhost:' + PORT));
   })
   .catch((err) => console.error(err));
